@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #F8F8FA;
+}
+
+.search-container>.form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+ }
+
+input::-webkit-input-placeholder {
+  color: #cccccc !important;
+}
+   
+input:-moz-placeholder { /* Firefox 18- */
+  color: #cccccc !important;  
+}
+   
+input::-moz-placeholder {  /* Firefox 19+ */
+  color: #cccccc !important;  
+}
+   
+input:-ms-input-placeholder {  
+  color: #cccccc !important;  
+}
+
+
+.Header{
+  background-color: #f6682F;
+  height: 50px;
+}
+.search-bar{
+  display: inline-block;
+}
+.search-bar>.search-container{
+  width: 65%;
+}
+.input-group-text{
+  background-color: white;
+}
+.search-container{
+  position: relative;
+  display: inline-block;
+}
+.search-container input{
+  text-indent: 30px;
+  width: 100% !important;
+  /* box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset; */
+}
+.search-container .fa-search{
+  position: absolute;
+  top: 10px;
+  left: 13px;
+  font-size: 15px;
+  color: #dee2e6;
+}
+.loading {
+  position: absolute;
+  top: 8px;
+  left: 11px;
+  border: 4px solid #dee2e6; /* Light grey */
+  border-top: 4px solid #4d4d4d; /* Blue */
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+  animation: spin 2s linear infinite;
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+
+
+@media screen and (max-width : 1025px){
+  .App>.container{
+    padding: 0;
+    max-width: 100%;
+  }
+  .search-bar>.search-container{
+    width: 100%;
+  }
+}
+
+@media screen and (max-width : 768px){
+
+}
+
