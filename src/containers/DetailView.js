@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
 
-import Title from '../components/Title';
 import SearchBar from '../components/SearchBar';
+import DetailTitle from '../components/DetailTitle';
+import DetailGraph from '../components/DetailGraph';
 
-// import List from '../components/List';
 
-class CoinList extends Component {
+class DetailView extends Component {
   render(){
     return (
-      <div className='CoinList container'>
+      <div className='DetailView container'>
         <SearchBar/>
-        <Title/>
-        {/* <Content/> */}
+        <DetailTitle/>
+        <DetailGraph/>
         {/* </Footer> */}
         <div> Made by DahanChoe <i className="fas fa-plane"></i> </div>
       </div>
@@ -20,4 +20,4 @@ class CoinList extends Component {
   }
 }
 
-export default CoinList;
+export default DetailView;
