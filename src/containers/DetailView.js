@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import SearchBar from '../components/SearchBar';
 import DetailTitle from '../components/DetailTitle';
@@ -20,4 +21,5 @@ class DetailView extends Component {
   }
 }
 
-export default DetailView;
+
+export default connect(undefined,undefined)(DetailView);

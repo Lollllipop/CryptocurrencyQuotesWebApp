@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <DetailView/>
+        <MainView/>
         {/* CoinList와 CoinDetail 사이에 라우트 필요함 */}
         {/* <CoinDetail/> */}
       </div>
