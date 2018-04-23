@@ -85,6 +85,10 @@ input:-ms-input-placeholder {
 }
 .page-link{
   padding: 3px 5px;
+  border-radius: .25rem;
+}
+.page-item-hidden{
+  display: none;
 }
 .page-link span{
   color: black;

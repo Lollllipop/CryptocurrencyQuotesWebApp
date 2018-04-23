@@ -2,15 +2,18 @@ import { INIT_VIEW } from '../actions';
 
 const initValue = {
   error: '',
-  coinTop30List: []
+  coinsTop20DisplayList: [],
+  coinsTop20NameList: []
 };
 
 export default function(state=initValue, action){
   switch(action.type){
-  case INIT_VIEW:                                          
+  case INIT_VIEW:      
+    // var parseCoinsName = action.data.map(v => v.name); 
     return{                                                           
       error: '',
-      coinTop30List: action.data                                
+      coinsTop20DisplayList: action.data.coinsTop20DisplayList,
+      coinsTop20NameList: action.data.coinsTop20NameList
     };
 
   default:
