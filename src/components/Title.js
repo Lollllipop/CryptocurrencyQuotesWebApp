@@ -19,7 +19,7 @@ export default function Title() {
    * ['5~CCCAGG~BTC~KRW'] 
    * 이 타입을 사용해야 할 듯 한국으로 change하기 위해선
    */
-  // socket.emit('SubAdd', { subs: ['2~Bithumb~ETH~KRW'] } );
+  // socket.emit('SubAdd', { subs: ['5~CCCAGG~BTC~KRW'] } );
   // socket.on('m', function (message) { // event는 m으로 약속되어 있는듯
   //   console.log(message);
   // });

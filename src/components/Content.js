@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { initViewAsync } from '../actions';
 
 
+
 class Content extends Component {
 
   constructor(props){
@@ -15,12 +16,12 @@ class Content extends Component {
     };
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.initViewAsync();
   }
 
   nextPaginationHandler(){
-    const totalPageCount = parseInt((this.props.coins.length-1)/10);
+    const totalPageCount = parseInt((this.props.coinsTotalCount.length-1)/10);
     if (totalPageCount == 0){
       this.setState({
         nextPaginationButtonState: 'page-item-hidden'
@@ -41,7 +42,7 @@ class Content extends Component {
   }
 
   prevPaginationHandler(){
-    const totalPageCount = parseInt((this.props.coins.length-1)/10);
+    const totalPageCount = parseInt((this.props.coinsTotalCount.length-1)/10);
     if (totalPageCount == 0){
       this.setState({
         prevPaginationButtonState: 'page-item-hidden'
@@ -141,7 +142,8 @@ class Content extends Component {
 
 function mapStateToProps(state){
   return {
-    coins: state.mainReducer.coinsTop20DisplayList,
+    coins: state.mainReducer.coinsTop10DisplayList,
+    coinsTotalCount: state.mainReducer.coinsNameList,
     error: state.mainReducer.error
   };
 }

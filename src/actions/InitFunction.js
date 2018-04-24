@@ -3,43 +3,46 @@ import axios from 'axios';
 
 export const INIT_VIEW = 'INIT_VIEW';    
 
-const FETCH_DATA_COUNT = 20;
-const COIN_TOP20_RANK_API_URL = `https://api.coinmarketcap.com/v1/ticker/?convert=KRW&limit=${FETCH_DATA_COUNT}`;
+const CRYPTO_CURRENCY_LIST_URL = 'https://min-api.cryptocompare.com/data/all/coinlist';
 const CRYPTO_CURRENCY_QUOTES_URL = 'https://min-api.cryptocompare.com/data/pricemultifull';
 const TO_SYMBOL = 'KRW';
-let coinsTop20NameList = [];
+let coinsNameList = [];
 
 export function initViewAsync(){
   return dispatch => {
     /**
-     * 시가총액 랭킹 30위 비트코인 이름 획득 ->
-     * 그 중 10개만 렌더링하기 위해 자른 후 ->
-     * 해당 비트코인에 대한 정보를 다시 획득 후 ->
-     * store에 해당 데이터 dispatch
+     * 1. Symbol, CoinName, SortOrder  가져오기
+     * 2. 이들 sortorder 기준으로 sort하기
+     * 3. 10개의 join한 데이터 만들기
      */
-    axios.get(COIN_TOP20_RANK_API_URL)
+    axios.get(CRYPTO_CURRENCY_LIST_URL)
       .then(response => {
-        const coinsTop20NameSymbolList = response.data.map(obj => ({name:obj.name, symbol:obj.symbol}));
-        coinsTop20NameList = coinsTop20NameSymbolList.map(obj => obj.name); // 이것도 어떻게 쿨하게 수정 안될까..?
-        const coinsTop20SymbolString = coinsTop20NameSymbolList.map(object => { // 굉장히 안좋은 코드 수정필요
-          if (object.symbol=='MIOTA')
-            return 'IOT';
-          return object.symbol;
-        }).slice(0, FETCH_DATA_COUNT).join();
-        return axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${coinsTop20SymbolString}&tsyms=${TO_SYMBOL}`); 
+        const coinsList = Object.keys(response.data.Data).map(key => response.data.Data[key]); // [{...},{...}...]
+        coinsList.sort((a,b) => a.SortOrder - b.SortOrder); // sort (asc)
+        coinsNameList = coinsList.map(obj => obj.CoinName); // ['Bitcoin','Ethereum'...]
+        const coinsTop10SymbolString = coinsList.map(object => object.Symbol).slice(0, 10).join();
+        return axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${coinsTop10SymbolString}&tsyms=${TO_SYMBOL}`); 
       })
       .then(response => {
-        const coinsTop20DisplayList = Object.keys(response.data.DISPLAY).map((key,i) => {
+        const pageCountFlag = 0;
+        const coinsTop10DisplayList = Object.keys(response.data.DISPLAY).map((key,i) => {
           const result = response.data.DISPLAY[key];
-          result.name = coinsTop20NameList[i];
+          result.name = coinsNameList[i];
           result.symbol = key;
           return result;
         });
         dispatch({
+          /**
+           * coinsTop10DisplayList
+           * coinsNameList
+           * pageCountFlag
+           * 이렇게 세개의 데이터가 결국 나와야 함
+           */
           type: INIT_VIEW, 
           data: {
-            coinsTop20DisplayList: coinsTop20DisplayList,
-            coinsTop20NameList: coinsTop20NameList
+            coinsTop10DisplayList: coinsTop10DisplayList,
+            coinsNameList: coinsNameList,
+            pageCountFlag: pageCountFlag
           }});
       });
   };
