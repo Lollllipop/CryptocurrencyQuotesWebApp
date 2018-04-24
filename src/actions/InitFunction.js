@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import io from 'socket.io-client';
 
 export const INIT_VIEW = 'INIT_VIEW';    
 
@@ -7,6 +6,7 @@ const CRYPTO_CURRENCY_LIST_URL = 'https://min-api.cryptocompare.com/data/all/coi
 const CRYPTO_CURRENCY_QUOTES_URL = 'https://min-api.cryptocompare.com/data/pricemultifull';
 const TO_SYMBOL = 'KRW';
 let coinsNameList = [];
+let coinsSymbolList = [];
 
 export function initViewAsync(){
   return dispatch => {
@@ -20,29 +20,25 @@ export function initViewAsync(){
         const coinsList = Object.keys(response.data.Data).map(key => response.data.Data[key]); // [{...},{...}...]
         coinsList.sort((a,b) => a.SortOrder - b.SortOrder); // sort (asc)
         coinsNameList = coinsList.map(obj => obj.CoinName); // ['Bitcoin','Ethereum'...]
-        const coinsTop10SymbolString = coinsList.map(object => object.Symbol).slice(0, 10).join();
-        return axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${coinsTop10SymbolString}&tsyms=${TO_SYMBOL}`); 
+        coinsSymbolList = coinsList.map(obj => obj.Symbol); // ['BTC','ETH'...]
+        const coins10SymbolString = coinsList.map(object => object.Symbol).slice(0, 10).join();
+        return axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${coins10SymbolString}&tsyms=${TO_SYMBOL}`); 
       })
       .then(response => {
-        const pageCountFlag = 0;
-        const coinsTop10DisplayList = Object.keys(response.data.DISPLAY).map((key,i) => {
+        const pageCount = 0;
+        const coins10DisplayList = Object.keys(response.data.DISPLAY).map((key,i) => {
           const result = response.data.DISPLAY[key];
           result.name = coinsNameList[i];
           result.symbol = key;
           return result;
         });
         dispatch({
-          /**
-           * coinsTop10DisplayList
-           * coinsNameList
-           * pageCountFlag
-           * 이렇게 세개의 데이터가 결국 나와야 함
-           */
           type: INIT_VIEW, 
           data: {
-            coinsTop10DisplayList: coinsTop10DisplayList,
+            coins10DisplayList: coins10DisplayList,
             coinsNameList: coinsNameList,
-            pageCountFlag: pageCountFlag
+            coinsSymbolList: coinsSymbolList,
+            pageCount: pageCount
           }});
       });
   };

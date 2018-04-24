@@ -1,23 +1,31 @@
-import { INIT_VIEW } from '../actions'; 
+import { INIT_VIEW, CLICK_BUTTON } from '../actions'; 
 
 const initValue = {
   error: '',
-  coinsTop10DisplayList: [],
+  coins10DisplayList: [],
   coinsNameList: [],
-  pageCountFlag: 0
+  coinsSymbolList: [],
+  pageCount: 0
 };
 
 export default function(state=initValue, action){
   switch(action.type){
   case INIT_VIEW:      
-    // var parseCoinsName = action.data.map(v => v.name); 
     return{                                                           
       error: '',
-      coinsTop10DisplayList: action.data.coinsTop10DisplayList,
+      coins10DisplayList: action.data.coins10DisplayList,
       coinsNameList: action.data.coinsNameList,
-      pageCountFlag: action.data.pageCountFlag
+      coinsSymbolList: action.data.coinsSymbolList,
+      pageCount: action.data.pageCount
     };
-
+  case CLICK_BUTTON:
+    return{
+      error: '',
+      coins10DisplayList: action.data.coins10DisplayList,
+      coinsNameList: [...state.coinsNameList],
+      coinsSymbolList: [...state.coinsSymbolList],
+      pageCount: action.data.pageCount
+    };
   default:
     return state;
   }

@@ -1,2 +1,2 @@
-export * from './ClickFunction';
+export * from './ButtonFunction';
 export * from './InitFunction';

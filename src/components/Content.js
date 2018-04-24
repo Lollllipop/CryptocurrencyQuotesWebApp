@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { initViewAsync } from '../actions';
-
-
+import { initViewAsync, ClickButtonAsync } from '../actions';
 
 class Content extends Component {
 
@@ -21,6 +19,7 @@ class Content extends Component {
   }
 
   nextPaginationHandler(){
+    this.props.ClickButtonAsync('next');
     const totalPageCount = parseInt((this.props.coinsTotalCount.length-1)/10);
     if (totalPageCount == 0){
       this.setState({
@@ -42,6 +41,7 @@ class Content extends Component {
   }
 
   prevPaginationHandler(){
+    this.props.ClickButtonAsync('prev');
     const totalPageCount = parseInt((this.props.coinsTotalCount.length-1)/10);
     if (totalPageCount == 0){
       this.setState({
@@ -64,7 +64,7 @@ class Content extends Component {
 
   renderCoins(){
     if(this.props.coins){
-      return this.props.coins.slice(this.state.page*10, (this.state.page+1)*10).map((v,i) => {
+      return this.props.coins.map((v,i) => {
         return (
           <tr key={v.symbol}>
             <th scope="row">{this.state.page*10+i+1}</th>
@@ -142,7 +142,7 @@ class Content extends Component {
 
 function mapStateToProps(state){
   return {
-    coins: state.mainReducer.coinsTop10DisplayList,
+    coins: state.mainReducer.coins10DisplayList,
     coinsTotalCount: state.mainReducer.coinsNameList,
     error: state.mainReducer.error
   };
@@ -151,7 +151,8 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return bindActionCreators(
     { 
-      initViewAsync 
+      initViewAsync,
+      ClickButtonAsync
     }, dispatch);
 }
 
