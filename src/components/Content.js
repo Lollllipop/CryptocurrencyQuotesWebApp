@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { initViewAsync, ClickButtonAsync } from '../actions';
 
+import { priceParser, marketCapParser } from '../utils';
+
 class Content extends Component {
 
   constructor(props){
@@ -68,11 +70,11 @@ class Content extends Component {
         return (
           <tr key={v.symbol}>
             <th scope="row">{this.state.page*10+i+1}</th>
-            <td>{v.name}</td>
-            <td>{v.KRW.PRICE}</td>
-            <td>{v.KRW.MKTCAP}</td>
-            <td>{v.KRW.CHANGEPCT24HOUR}</td>
-            <td>{v.KRW.VOLUME24HOURTO}</td>
+            <td align='left'>{v.name}</td>
+            <td align='right'>{priceParser(v.KRW.PRICE)}</td>
+            <td align='right'>{marketCapParser(v.KRW.MKTCAP)}</td>
+            <td align='right'>{v.KRW.CHANGEPCT24HOUR + '%'}</td>
+            <td align='right'>{priceParser(v.KRW.VOLUME24HOURTO)}</td>
           </tr>
         );
       });
@@ -80,6 +82,7 @@ class Content extends Component {
   }
 
   render() {
+    console.log('두번 렌더링 되는 것 고칠필요 있음!!');
     return (
       <div className="Content">
         <div className="PaginationButton">
@@ -153,7 +156,8 @@ function mapDispatchToProps(dispatch){
     { 
       initViewAsync,
       ClickButtonAsync
-    }, dispatch);
+    },
+    dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

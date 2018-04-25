@@ -19,18 +19,21 @@ export function ClickButtonAsync(buttonType){
 
     axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${nextCoins10SymbolString}&tsyms=${TO_SYMBOL}`)
       .then(response => {
-        const coins10DisplayList = Object.keys(response.data.DISPLAY).map((key,i) => {
-          const result = response.data.DISPLAY[key];
-          result.name = nextCoins10NameList[i];
-          result.symbol = key;
-          return result;
-        });
-        dispatch({
-          type: CLICK_BUTTON, 
-          data: {
-            coins10DisplayList: coins10DisplayList,
-            pageCount: currentPageCount
-          }});
+        if(response.data.DISPLAY){
+          const coins10DisplayList = Object.keys(response.data.DISPLAY).map((key,i) => {
+            const result = response.data.DISPLAY[key];
+            result.name = nextCoins10NameList[i];
+            result.symbol = key;
+            return result;
+          });
+          dispatch({
+            type: CLICK_BUTTON, 
+            data: {
+              coins10DisplayList: coins10DisplayList,
+              pageCount: currentPageCount
+            }
+          });         
+        }
       });
   };
 
