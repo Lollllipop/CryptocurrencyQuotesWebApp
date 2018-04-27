@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import { connect } from 'react-redux';
 
 class SearchBar extends Component {
-  constructor(props){                                                           
+  constructor(props) {                                                           
     super(props);
     this.state = { 
       loading: true                                                             
@@ -10,8 +10,9 @@ class SearchBar extends Component {
   }
   
   render() {
-    const clsName = this.state.loading ?
-      'loading' : 'fas fa-search';
+    
+    const clsName = this.state.loading ? 'loading' : 'fas fa-search';
+
     return (
       <div className="SearchBar">
         <nav className="navbar navbar-light justify-content-center bg-dark">
