@@ -18,9 +18,9 @@ export function priceUSD2KRW(price, priceKind) {
   }
   
   if (price.indexOf(',') !== -1) {
-    price = parseInt(price.replace(/,/g, '')); // 1,000,000 => 1000000
+    price = parseInt(price.replace(/,/g, ''), 10); // 1,000,000 => 1000000
   } else {
-    price = parseInt(price);
+    price = parseInt(price, 10);
   }
 
   if (unit) {
@@ -29,7 +29,7 @@ export function priceUSD2KRW(price, priceKind) {
   
   if (priceKind) { // marketCap의 경우만 인자 넘김
     if (price > 100000000) { // 1억보다 크면
-      price = parseInt(price / 100000000).toString();
+      price = parseInt(price / 100000000, 10).toString();
       if (price.length > 4) {
         price = price.slice(0, price.length - 4) + '조 ' + price.slice(price.length - 4) + '억';
       } else {

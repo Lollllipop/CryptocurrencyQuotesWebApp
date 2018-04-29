@@ -57,5 +57,4 @@ export function ClickButtonAsync(buttonType) {
         }
       });
   };
-
 }

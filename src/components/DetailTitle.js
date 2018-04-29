@@ -8,7 +8,7 @@ class DetailTitle extends Component {
         <div className="row">
           <div className="col-sm-4">
             <div className="coin-logo-box col">
-              <img className="coin-logo" src="https://bitcoin.org/img/icons/opengraph.png"/>
+              <img className="coin-logo" src="https://bitcoin.org/img/icons/opengraph.png" alt='bitcoinImage'/>
             </div>
             <div className="coin-name col">
               <h5>비트코인 BTC</h5>

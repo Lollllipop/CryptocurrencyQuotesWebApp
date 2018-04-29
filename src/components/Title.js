@@ -1,5 +1,5 @@
 import React from 'react';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 export default function Title() {
   // const socket = io('wss://streamer.cryptocompare.com');
@@ -29,7 +29,7 @@ export default function Title() {
   // });
   return (
     <div className="Title">
-      <div className='col'> <h1>Coin graph</h1> </div>
+      <div className='col'> <h1>코인 리스트</h1> </div>
     </div>
   );
 }

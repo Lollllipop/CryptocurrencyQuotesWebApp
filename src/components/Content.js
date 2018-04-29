@@ -26,14 +26,14 @@ class Content extends Component {
 
   nextPaginationHandler() {
     this.props.ClickButtonAsync('next');
-    const totalPageCount = parseInt((this.props.coinsTotalCount.length - 1) / 10);
-    if (totalPageCount == 0) {
+    const totalPageCount = parseInt(((this.props.coinsTotalCount.length - 1) / 10), 10);
+    if (totalPageCount === 0) {
       this.setState({
         nextPaginationButtonState: 'page-item-hidden',
         listOrderFlag: '',
         listOrderFlagClass: {PRICE:['', ''], MKTCAP:['', ''], CHANGEPCT24HOUR:['', ''], VOLUME24HOURTO:['', '']}
       });
-    } else if ((this.state.page + 1) == totalPageCount) {
+    } else if ((this.state.page + 1) === totalPageCount) {
       this.setState({
         nextPaginationButtonState: 'page-item-hidden',
         prevPaginationButtonState: 'page-item',
@@ -54,14 +54,14 @@ class Content extends Component {
 
   prevPaginationHandler() {
     this.props.ClickButtonAsync('prev');
-    const totalPageCount = parseInt((this.props.coinsTotalCount.length - 1) / 10);
-    if (totalPageCount == 0) {
+    const totalPageCount = parseInt(((this.props.coinsTotalCount.length - 1) / 10), 10);
+    if (totalPageCount === 0) {
       this.setState({
         prevPaginationButtonState: 'page-item-hidden',
         listOrderFlag: '',
         listOrderFlagClass: {PRICE:['', ''], MKTCAP:['', ''], CHANGEPCT24HOUR:['', ''], VOLUME24HOURTO:['', '']}
       });
-    } else if ((this.state.page - 1) == 0) {
+    } else if ((this.state.page - 1) === 0) {
       this.setState({
         nextPaginationButtonState: 'page-item',
         prevPaginationButtonState: 'page-item-hidden',
@@ -155,7 +155,6 @@ class Content extends Component {
   }
 
   render() {
-    console.log(this.props.onLoad);
 
     const contentComponentClsName = this.props.onLoad ? 'on-load' :'';
     const spinnerClsName = this.props.onLoad ? 'content-loading' : '';
@@ -168,13 +167,13 @@ class Content extends Component {
             <ul className="pagination justify-content-end">
               <li className={this.state.prevPaginationButtonState}>
                 <a className="page-link" href="#" aria-label="Previous" onClick={() => this.prevPaginationHandler()}>
-                  <span aria-hidden="true"><i className="fas fa-angle-left"></i>  Prev Page</span>
+                  <span aria-hidden="true"><i className="fas fa-angle-left"></i>  이전</span>
                   <span className="sr-only">Previous</span>
                 </a>
               </li>
               <li className={this.state.nextPaginationButtonState}>
                 <a className="page-link" href="#" aria-label="Next" onClick={() => this.nextPaginationHandler()}>
-                  <span aria-hidden="true">Next Page    <i className="fas fa-angle-right"></i></span>
+                  <span aria-hidden="true">다음    <i className="fas fa-angle-right"></i></span>
                   <span className="sr-only">Next</span>
                 </a>
               </li>

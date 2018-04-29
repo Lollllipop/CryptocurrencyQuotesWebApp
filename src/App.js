@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MainView from './pages/MainView';
-import DetailView from './pages/DetailView';
+// import DetailView from './pages/DetailView';
 import './App.css';
 
 class App extends Component {

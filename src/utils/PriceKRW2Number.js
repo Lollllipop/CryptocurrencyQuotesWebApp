@@ -24,9 +24,9 @@ export function priceUSD2Number(price, selectedListHead) {
     }
 
     if (price.indexOf(',') !== -1) {
-      price = parseInt(price.replace(/,/g, '')); // 1,000,000 => 1000000
+      price = parseInt(price.replace(/,/g, ''), 10); // 1,000,000 => 1000000
     } else {
-      price = parseInt(price);
+      price = parseInt(price, 10);
     }
 
     if (unit) {
