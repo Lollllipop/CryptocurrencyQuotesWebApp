@@ -1,4 +1,9 @@
-import { INIT_VIEW, CLICK_BUTTON, CLICK_BUTTON_MIDDLE_ACTION } from '../actions'; 
+import { 
+  INIT_VIEW, 
+  CLICK_BUTTON, 
+  CLICK_BUTTON_MIDDLE_ACTION ,
+  UPDATE_COINS_WITH_SOCKET
+} from '../actions'; 
 
 const initValue = {
   error: '',
@@ -7,7 +12,9 @@ const initValue = {
   coinsSymbolList: [],
   coinsPriceHistoricalObject: {},
   pageCount: 0,
-  onLoad: true
+  socketCount: 0,
+  onLoad: true,
+  increaseFlag: [] // 1 : 증가  2 : 감소  4 : 변화x
 };
 
 export default function(state=initValue, action) {
@@ -20,7 +27,9 @@ export default function(state=initValue, action) {
       coinsSymbolList: action.data.coinsSymbolList,
       coinsPriceHistoricalObject: action.data.coinsPriceHistoricalObject,
       pageCount: action.data.pageCount,
-      onLoad: action.data.onLoad
+      onLoad: action.data.onLoad,
+      socketCount: state.socketCount,
+      increaseFlag: [...state.increaseFlag]
     };
   case CLICK_BUTTON:
     return {
@@ -30,7 +39,9 @@ export default function(state=initValue, action) {
       coinsSymbolList: [...state.coinsSymbolList],
       coinsPriceHistoricalObject: action.data.coinsPriceHistoricalObject,
       pageCount: action.data.pageCount,
-      onLoad: action.data.onLoad
+      onLoad: action.data.onLoad,
+      socketCount: state.socketCount + 1,
+      increaseFlag: [...state.increaseFlag]
     };
   case CLICK_BUTTON_MIDDLE_ACTION:
     return {
@@ -38,9 +49,23 @@ export default function(state=initValue, action) {
       coins10DisplayList: [...state.coins10DisplayList],
       coinsNameList: [...state.coinsNameList],
       coinsSymbolList: [...state.coinsSymbolList],
-      coinsPriceHistoricalObject: [...state.coinsPriceHistoricalObject],
+      coinsPriceHistoricalObject: state.coinsPriceHistoricalObject,
       pageCount: state.pageCount,
-      onLoad: action.data.onLoad
+      onLoad: action.data.onLoad,
+      socketCount: state.socketCount,
+      increaseFlag: [...state.increaseFlag]
+    };
+  case UPDATE_COINS_WITH_SOCKET:
+    return {
+      error: '',
+      coins10DisplayList: action.data.updatedCoins10DisplayList,
+      coinsNameList: [...state.coinsNameList],
+      coinsSymbolList: [...state.coinsSymbolList],
+      coinsPriceHistoricalObject: state.coinsPriceHistoricalObject,
+      pageCount: state.pageCount,
+      onLoad: state.onLoad,
+      socketCount: state.socketCount,
+      increaseFlag: action.data.increaseFlag
     };
   default:
     return state;

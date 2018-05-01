@@ -3,8 +3,6 @@ import React from 'react';
 
 export default function Title() {
   // const socket = io('wss://streamer.cryptocompare.com');
-  // const socket2 = io('wss://streamer.cryptocompare.com');
-  // const socket3 = io('wss://streamer.cryptocompare.com');
   /**
    * 2 : current
    * Poloniex : Exchange Name
@@ -20,11 +18,8 @@ export default function Title() {
    * 이 타입을 사용해야 할 듯 한국으로 change하기 위해선
    */
   // socket.emit('SubAdd', { subs: ['5~CCCAGG~BTC~KRW'] } );
+  // socket.emit('SubAdd', { subs: ['5~CCCAGG~ETH~KRW'] } );
   // socket.on('m', function (message) { // event는 m으로 약속되어 있는듯
-  //   console.log(message);
-  // });
-  // socket2.emit('SubAdd', { subs: ['5~CCCAGG~BTC~USD'] } );
-  // socket2.on('m', function (message) { // event는 m으로 약속되어 있는듯
   //   console.log(message);
   // });
   return (

@@ -184,6 +184,12 @@ input:-ms-input-placeholder {
   animation: spin 2s linear infinite;
   z-index: 9999;
 }
+.price-up{
+  color: #40c358;
+}
+.price-down{
+  color: #fd2d52;
+}
 .fa-caret-up, .fa-caret-down{
   color: #848484;
   position: absolute;

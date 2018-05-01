@@ -8,7 +8,7 @@ const CRYPTO_CURRENCY_PRICE_HISTORICAL_URL = 'https://min-api.cryptocompare.com/
 const TO_SYMBOL = 'KRW';
 const HISTORICAL_LIMIT = '71';
 
-export function ClickButtonAsync(buttonType) {
+export function clickButtonAsync(buttonType) {
   const addOne = (buttonType === 'prev') ? -1 : 1; // 이 한 줄로 next, prev 구분
 
   return (dispatch, getState) => {

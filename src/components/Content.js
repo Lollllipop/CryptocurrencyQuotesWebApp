@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { initViewAsync, ClickButtonAsync } from '../actions';
+import io from 'socket.io-client';
+import { initViewAsync, clickButtonAsync, updateCoinsWithSocketAsync } from '../actions';
 import { priceUSD2KRW, priceUSD2Number } from '../utils';
 
 import Chart from './ListChart';
@@ -17,15 +18,50 @@ class Content extends Component {
       selectedListHead: '',
       nextPaginationButtonState: 'page-item',
       prevPaginationButtonState: 'page-item-hidden',
+      socket: ''
     };
   }
 
   componentDidMount() {
     this.props.initViewAsync();
+    const socket = io('wss://streamer.cryptocompare.com'); // 처음에만 소켓 연결
+    this.setState({
+      socket: socket
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    this.socketHandler(prevProps);
+  }
+
+  socketHandler(prevProps) {
+    if ( // 처음 그리고 페이지 바뀔시 emit
+      (prevProps.coins.length === 0 && this.props.coins.length !== 0) ||
+      (this.props.coins !== prevProps.coins && this.props.socketCount !== prevProps.socketCount)
+    ) 
+    {
+
+      if (prevProps.coins.length !== 0) {
+        for (let coin of prevProps.coins) {
+          let fromSymbol = coin.symbol;
+          this.state.socket.emit('SubRemove', { subs: [`5~CCCAGG~${fromSymbol}~KRW`] } );
+        }
+      }
+
+      for (let coin of this.props.coins) {
+        let fromSymbol = coin.symbol;
+        this.state.socket.emit('SubAdd', { subs: [`5~CCCAGG~${fromSymbol}~KRW`] } );
+      }
+  
+      this.state.socket.on('m', message => {
+        this.props.updateCoinsWithSocketAsync(message);
+      });
+
+    }
   }
 
   nextPaginationHandler() {
-    this.props.ClickButtonAsync('next');
+    this.props.clickButtonAsync('next');
     const totalPageCount = parseInt(((this.props.coinsTotalCount.length - 1) / 10), 10);
     if (totalPageCount === 0) {
       this.setState({
@@ -53,7 +89,7 @@ class Content extends Component {
   }
 
   prevPaginationHandler() {
-    this.props.ClickButtonAsync('prev');
+    this.props.clickButtonAsync('prev');
     const totalPageCount = parseInt(((this.props.coinsTotalCount.length - 1) / 10), 10);
     if (totalPageCount === 0) {
       this.setState({
@@ -116,6 +152,8 @@ class Content extends Component {
   renderCoins() {
     if (this.props.coins.length !== 0) {
       const coins = this.props.coins;
+      let increaseFlag;
+
       if (this.state.listOrderFlag === ''){
         // 첫 로딩은 그냥 pass
       } else if (this.state.listOrderFlag === 'asc') {
@@ -123,12 +161,25 @@ class Content extends Component {
       } else if (this.state.listOrderFlag === 'desc') {
         coins.sort((a,b) => priceUSD2Number(a.KRW[this.state.selectedListHead], this.state.selectedListHead) < priceUSD2Number(b.KRW[this.state.selectedListHead]), this.state.selectedListHead);
       }
+
+      if (this.props.increaseFlag[1] === '4') {
+        increaseFlag = '';
+      } else if (this.props.increaseFlag[1] === '1') {
+        increaseFlag = 'price-up';
+      } else if (this.props.increaseFlag[1] === '2') {
+        increaseFlag = 'price-down';
+      }
+
       return coins.map((v, i) => {
+        if (v.symbol === this.props.increaseFlag[0]) {
+          var tmpFlag = increaseFlag;
+        }
+
         return (
           <tr key={v.symbol}>
             <th scope="row">{this.state.page * 10 + i + 1}</th>
             <td align='left'>{v.name}</td>
-            <td align='right'>{priceUSD2KRW(v.KRW.PRICE)}</td>
+            <td align='right' className={tmpFlag}>{priceUSD2KRW(v.KRW.PRICE)}</td>
             <td align='right'>{priceUSD2KRW(v.KRW.MKTCAP, 'marketCap')}</td>
             <td align='right'>{v.KRW.CHANGEPCT24HOUR + '%'}</td>
             <td align='right'>{priceUSD2KRW(v.KRW.VOLUME24HOURTO)}</td>
@@ -202,11 +253,11 @@ class Content extends Component {
                   <i className={`fas fa-caret-down ${this.state.listOrderFlagClass.CHANGEPCT24HOUR[1]}`}></i>
                 </th>
                 <th scope="col" onClick={() => this.listOrderHandler('VOLUME24HOURTO')}>
-                  거래금액(24H)
+                  거래금액 (24H)
                   <i className={`fas fa-caret-up ${this.state.listOrderFlagClass.VOLUME24HOURTO[0]}`}></i>
                   <i className={`fas fa-caret-down ${this.state.listOrderFlagClass.VOLUME24HOURTO[1]}`}></i>
                 </th>
-                <th scope="col">가격 추세(3일)</th>
+                <th scope="col">가격 추세 (3D)</th>
               </tr>
             </thead>
             <tbody>
@@ -226,7 +277,9 @@ function mapStateToProps(state) {
     coinsTotalCount: state.mainReducer.coinsNameList,
     coinsPriceHistoricalObject: state.mainReducer.coinsPriceHistoricalObject,
     onLoad: state.mainReducer.onLoad,
-    error: state.mainReducer.error
+    socketCount: state.mainReducer.socketCount,
+    error: state.mainReducer.error,
+    increaseFlag: state.mainReducer.increaseFlag
   };
 }
 
@@ -234,7 +287,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     { 
       initViewAsync,
-      ClickButtonAsync
+      clickButtonAsync,
+      updateCoinsWithSocketAsync
     },
     dispatch);
 }
