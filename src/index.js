@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReduxThunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';                           
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 // import { createLogger } from 'redux-logger';
-import ReduxThunk from 'redux-thunk';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
@@ -16,7 +17,9 @@ const composeStoreWithMiddleware = applyMiddleware(
 
 ReactDOM.render((
   <Provider store={composeStoreWithMiddleware(reducers)}>
-    <App/>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
   </Provider>
 ), document.getElementById('root'));
 

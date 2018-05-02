@@ -1,6 +1,10 @@
 export function priceUSD2KRW(price, priceKind) {
   let unit;
 
+  if (price === undefined) {
+    return;
+  }
+
   if (price === '₩ 0') {
     return '-';
   }

@@ -24,8 +24,10 @@ export function clickButtonAsync(buttonType) {
     const currentPageCount = currentState.mainReducer.pageCount + addOne;
     const currentCoinsSymbolList = currentState.mainReducer.coinsSymbolList;
     const currentCoinsNameList = currentState.mainReducer.coinsNameList;
+    const currentCoinsImageUrl = currentState.mainReducer.coinsImageUrlList;
     const nextCoins10SymbolString = currentCoinsSymbolList.slice(currentPageCount * 10, (currentPageCount + 1) * 10).join();
     const nextCoins10NameList = currentCoinsNameList.slice(currentPageCount * 10, (currentPageCount + 1) * 10);
+    const nextCoins10ImageUrlList = currentCoinsImageUrl.slice(currentPageCount * 10, (currentPageCount + 1) * 10);
     const coins10SymbolList = nextCoins10SymbolString.split(',');
     const priceHistoricalPromises = coins10SymbolList.map(symbol => axios.get(`${CRYPTO_CURRENCY_PRICE_HISTORICAL_URL}?fsym=${symbol}&tsym=${TO_SYMBOL}&limit=${HISTORICAL_LIMIT}`));
     const priceCoins10Promise = axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${nextCoins10SymbolString}&tsyms=${TO_SYMBOL}`);
@@ -38,6 +40,7 @@ export function clickButtonAsync(buttonType) {
             const result = response[10].data.DISPLAY[key];
             result.name = nextCoins10NameList[i];
             result.symbol = key;
+            result.imageUrl = nextCoins10ImageUrlList[i];
             return result;
           });
           const coinsPriceHistoricalObject = {};

@@ -110,6 +110,27 @@ input:-ms-input-placeholder {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.SearchBar a:hover{
+  text-decoration: none;
+}
+.table a:hover{
+  text-decoration: none;
+  color: royalblue;
+}
+.table a{
+  color: inherit;
+}
+.home-button-show{
+  display: inline-block;
+  position: absolute;
+  left: 20px;
+  z-index: 9999;
+  color: white !important;
+  text-decoration: none
+}
+.home-button-hidden{
+  display: none;
+}
 .Content{
   background-color: white;
 }
@@ -123,6 +144,10 @@ input:-ms-input-placeholder {
 .page-link span{
   color: black;
   font-size: 12px;
+}
+.coin-list-logo{
+  margin-right: 7px;
+  margin-bottom: 1px;
 }
 .table{
   table-layout: fixed;

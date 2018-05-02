@@ -10,11 +10,13 @@ const initValue = {
   coins10DisplayList: [],
   coinsNameList: [],
   coinsSymbolList: [],
+  coinsImageUrlList: [],
+  coinsIdList: [],
   coinsPriceHistoricalObject: {},
   pageCount: 0,
   socketCount: 0,
   onLoad: true,
-  increaseFlag: [] // 1 : 증가  2 : 감소  4 : 변화x
+  increaseFlag: []
 };
 
 export default function(state=initValue, action) {
@@ -25,6 +27,8 @@ export default function(state=initValue, action) {
       coins10DisplayList: action.data.coins10DisplayList,
       coinsNameList: action.data.coinsNameList,
       coinsSymbolList: action.data.coinsSymbolList,
+      coinsImageUrlList: action.data.coinsImageUrlList,
+      coinsIdList: action.data.coinsIdList,
       coinsPriceHistoricalObject: action.data.coinsPriceHistoricalObject,
       pageCount: action.data.pageCount,
       onLoad: action.data.onLoad,
@@ -37,6 +41,8 @@ export default function(state=initValue, action) {
       coins10DisplayList: action.data.coins10DisplayList,
       coinsNameList: [...state.coinsNameList],
       coinsSymbolList: [...state.coinsSymbolList],
+      coinsImageUrlList: [...state.coinsImageUrlList],
+      coinsIdList: [...state.coinsIdList],
       coinsPriceHistoricalObject: action.data.coinsPriceHistoricalObject,
       pageCount: action.data.pageCount,
       onLoad: action.data.onLoad,
@@ -49,6 +55,8 @@ export default function(state=initValue, action) {
       coins10DisplayList: [...state.coins10DisplayList],
       coinsNameList: [...state.coinsNameList],
       coinsSymbolList: [...state.coinsSymbolList],
+      coinsImageUrlList: [...state.coinsImageUrlList],
+      coinsIdList: [...state.coinsIdList],
       coinsPriceHistoricalObject: state.coinsPriceHistoricalObject,
       pageCount: state.pageCount,
       onLoad: action.data.onLoad,
@@ -61,6 +69,8 @@ export default function(state=initValue, action) {
       coins10DisplayList: action.data.updatedCoins10DisplayList,
       coinsNameList: [...state.coinsNameList],
       coinsSymbolList: [...state.coinsSymbolList],
+      coinsImageUrlList: [...state.coinsImageUrlList],
+      coinsIdList: [...state.coinsIdList],
       coinsPriceHistoricalObject: state.coinsPriceHistoricalObject,
       pageCount: state.pageCount,
       onLoad: state.onLoad,

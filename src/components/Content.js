@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
 import { initViewAsync, clickButtonAsync, updateCoinsWithSocketAsync } from '../actions';
 import { priceUSD2KRW, priceUSD2Number } from '../utils';
@@ -32,6 +33,10 @@ class Content extends Component {
 
   componentDidUpdate(prevProps) {
     this.socketHandler(prevProps);
+  }
+
+  componentWillUnmount() {
+    this.state.socket.close();
   }
 
   socketHandler(prevProps) {
@@ -157,9 +162,9 @@ class Content extends Component {
       if (this.state.listOrderFlag === ''){
         // 첫 로딩은 그냥 pass
       } else if (this.state.listOrderFlag === 'asc') {
-        coins.sort((a,b) => priceUSD2Number(a.KRW[this.state.selectedListHead], this.state.selectedListHead) > priceUSD2Number(b.KRW[this.state.selectedListHead]), this.state.selectedListHead);
+        coins.sort((a,b) => priceUSD2Number(a.KRW[this.state.selectedListHead], this.state.selectedListHead) > priceUSD2Number(b.KRW[this.state.selectedListHead], this.state.selectedListHead));
       } else if (this.state.listOrderFlag === 'desc') {
-        coins.sort((a,b) => priceUSD2Number(a.KRW[this.state.selectedListHead], this.state.selectedListHead) < priceUSD2Number(b.KRW[this.state.selectedListHead]), this.state.selectedListHead);
+        coins.sort((a,b) => priceUSD2Number(a.KRW[this.state.selectedListHead], this.state.selectedListHead) < priceUSD2Number(b.KRW[this.state.selectedListHead], this.state.selectedListHead));
       }
 
       if (this.props.increaseFlag[1] === '4') {
@@ -174,11 +179,11 @@ class Content extends Component {
         if (v.symbol === this.props.increaseFlag[0]) {
           var tmpFlag = increaseFlag;
         }
-
+        const cryptocompareURL = 'https://www.cryptocompare.com';
         return (
           <tr key={v.symbol}>
             <th scope="row">{this.state.page * 10 + i + 1}</th>
-            <td align='left'>{v.name}</td>
+            <td align='left'><Link to={`/${v.name}`}><img src={`${cryptocompareURL}${v.imageUrl}`} alt='logo' width='20' className='coin-list-logo'></img>{v.name}</Link></td>
             <td align='right' className={tmpFlag}>{priceUSD2KRW(v.KRW.PRICE)}</td>
             <td align='right'>{priceUSD2KRW(v.KRW.MKTCAP, 'marketCap')}</td>
             <td align='right'>{v.KRW.CHANGEPCT24HOUR + '%'}</td>

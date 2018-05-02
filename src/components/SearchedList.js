@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class SearchedList extends Component {
 
   renderCoinsName() {
     return this.props.searchedCoinList.map(value => {
       return (
-        <a href="#" key={value} className="list-group-item list-group-item-action">{value}</a>
+        <Link to={`/${value}`} key={value} className="list-group-item list-group-item-action">{value}</Link>
       );
     });
   }

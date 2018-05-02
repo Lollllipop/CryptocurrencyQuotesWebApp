@@ -8,7 +8,7 @@ const ONE_DAY = 86400;
 
 export function updateCoinsWithSocketAsync(message) {
   return (dispatch, getState) => {
-
+    
     if (message.split('~').length > 5) {
       messageParser(message)
         .then(response => {
