@@ -11,7 +11,6 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path='/' component={MainView}/>
-          <Route path='/list'/>
           <Route path='/:coinName' component={DetailView}/>
         </Switch>
       </div>

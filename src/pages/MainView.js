@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Title from '../components/Title';
 import SearchBar from '../components/SearchBar';
 import Content from '../components/Content';
+// import Footer from '../components/Footer';
 
 // import List from '../components/List';
 
@@ -13,8 +14,7 @@ class MainView extends Component {
         <SearchBar/>
         <Title/>
         <Content/>
-        {/* </Footer> */}
-        <div> Made by DahanChoe <i className="fas fa-plane"></i> </div>
+        {/* <Footer/> */}
       </div>
     );
   }

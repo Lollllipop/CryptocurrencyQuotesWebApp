@@ -6,7 +6,8 @@ import {
 const initValue = {
   error: '',
   searchedCoinList: [],
-  onLoad: false
+  onLoad: false,
+  onSearch: false
 };
 
 export default function(state=initValue, action) {
@@ -15,13 +16,15 @@ export default function(state=initValue, action) {
     return {                                                           
       error: '',
       searchedCoinList: action.data.searchedCoinList,
-      onLoad: action.data.onLoad
+      onLoad: action.data.onLoad,
+      onSearch: action.data.onSearch
     };
   case PRE_ON_CHANGE_STATE:
     return {                                                           
       error: '',
       searchedCoinList: [...state.searchedCoinList],
-      onLoad: action.data.onLoad
+      onLoad: action.data.onLoad,
+      onSearch: action.data.onSearch
     };
   default:
     return state;

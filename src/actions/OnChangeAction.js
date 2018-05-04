@@ -15,6 +15,7 @@ export function onChangeSearchBarStateAsync(targetValue) {
   return (dispatch, getState) => {
 
     if (targetValue) {
+      
       const currentState = getState();
       const expr = /\s/g;
       const coinsNameList = currentState.mainReducer.coinsNameList;
@@ -32,7 +33,8 @@ export function onChangeSearchBarStateAsync(targetValue) {
         type: ON_CHANGE_SEARCHBAR_STATE, 
         data: {
           searchedCoinList: searched10CoinList,
-          onLoad: false
+          onLoad: false,
+          onSearch: true
         }
       }); 
     } else {
@@ -40,7 +42,8 @@ export function onChangeSearchBarStateAsync(targetValue) {
         type: ON_CHANGE_SEARCHBAR_STATE, 
         data: {
           searchedCoinList: [],
-          onLoad: false
+          onLoad: false,
+          onSearch: true
         }
       }); 
     }

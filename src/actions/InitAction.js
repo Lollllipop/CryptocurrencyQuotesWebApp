@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 export const INIT_VIEW = 'INIT_VIEW';
-export const INIT_DETAIL_VIEW = 'INIT_DETAIL_VIEW';    
+export const INIT_DETAIL_VIEW = 'INIT_DETAIL_VIEW';  
+export const INIT_DETAIL_VIEW_COIN_LIST = 'INIT_DETAIL_VIEW_COIN_LIST';  
+export const INIT_DETAIL_MIDDLE_ACTION = 'INIT_DETAIL_MIDDLE_ACTION';
 
 const CRYPTO_CURRENCY_LIST_URL = 'https://min-api.cryptocompare.com/data/all/coinlist';
 const CRYPTO_CURRENCY_QUOTES_URL = 'https://min-api.cryptocompare.com/data/pricemultifull';
@@ -72,14 +74,29 @@ export function initViewAsync() {
 export function initDetailViewAsync(coinName) { // coinName 값만 가지고 있고 symbol, id 값을 구해야 함
   return (dispatch, getState) => {
 
+    dispatch({
+      type: INIT_DETAIL_MIDDLE_ACTION, 
+      data: {
+        onLoad: true
+      }
+    });
+
     const currentState = getState();
     let coinsObjectList;
 
-    if (currentState.mainReducer.coinsNameList.length === 0) { // 초기화가 안되어 있다면
+    if (currentState.mainReducer.coinsSymbolList.length === 0) { // 초기화가 안되어 있다면
       axios.get(CRYPTO_CURRENCY_LIST_URL)
-        .then(response => { //ImageUrl, Symbol 필요
+        .then(response => {
           const coinsList = Object.keys(response.data.Data).map(key => response.data.Data[key]);
           const coinImageUrl = coinsList.filter(object => object.CoinName === coinName)[0].ImageUrl;
+          coinsList.sort((a, b) => a.SortOrder - b.SortOrder);
+          coinsNameList = coinsList.map(obj => obj.CoinName); // ['Bitcoin','Ethereum'...]
+          dispatch({
+            type: INIT_DETAIL_VIEW_COIN_LIST, 
+            data: {
+              coinsNameList: coinsNameList
+            }
+          });
           coinsObjectList = coinsListToObject(coinsList); // {Bitcoin: ['BTC', '1180'], Ethereum: ['ETH', '1490'] ...}
           const coinPricePromise = axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${coinsObjectList[coinName][0]}&tsyms=${TO_SYMBOL}`);
           const coinHistoricalPricePromise = axios.get(`${CRYPTO_CURRENCY_PRICE_HISTORICAL_MINUTE_URL}?fsym=${coinsObjectList[coinName][0]}&tsym=${TO_SYMBOL}&limit=${HISTORICAL_MINUTE_LIMIT}`);
@@ -93,16 +110,19 @@ export function initDetailViewAsync(coinName) { // coinName 값만 가지고 있
                 symbol: coinsObjectList[coinName][0],
                 img: `https://www.cryptocompare.com${coinImageUrl}`
               };
+              const lastMinute = response[1].data.Data[parseInt(HISTORICAL_MINUTE_LIMIT, 10)].time;
               const coinHistoricalClosePriceList = response[1].data.Data.map(priceObject => priceObject.close);
-              coinHistoricalClosePriceList.forEach((item, index, array) => array[index] = parseInt(item));
+              coinHistoricalClosePriceList.forEach((item, index, array) => array[index] = parseInt(item, 10));
 
               dispatch({
                 type: INIT_DETAIL_VIEW, 
                 data: {
                   coinDisplayObject: coinDisplayObject,
                   coinHistoricalClosePriceList: coinHistoricalClosePriceList,
+                  lastMinute: lastMinute,
                   onLoad: false
-                }});
+                }
+              });
             });
         });
 
@@ -125,17 +145,19 @@ export function initDetailViewAsync(coinName) { // coinName 값만 가지고 있
             symbol: coinsObjectList[coinName][0],
             img: `https://www.cryptocompare.com${coinsImageUrlList[coinsNameList.indexOf(coinName)]}`
           };
-          console.log(response[1].data.Data);
+          const lastMinute = response[1].data.Data[parseInt(HISTORICAL_MINUTE_LIMIT, 10)].time;
           const coinHistoricalClosePriceList = response[1].data.Data.map(priceObject => priceObject.close);
-          coinHistoricalClosePriceList.forEach((item, index, array) => array[index] = parseInt(item));
+          coinHistoricalClosePriceList.forEach((item, index, array) => array[index] = parseInt(item, 10));
           
           dispatch({
             type: INIT_DETAIL_VIEW, 
             data: {
               coinDisplayObject: coinDisplayObject,
               coinHistoricalClosePriceList: coinHistoricalClosePriceList,
+              lastMinute: lastMinute,
               onLoad: false
-            }});
+            }
+          });
         });
     }
   };

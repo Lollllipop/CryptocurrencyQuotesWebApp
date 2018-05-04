@@ -1,4 +1,8 @@
+html{
+  height: 100%;
+}
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -36,6 +40,7 @@ input:-ms-input-placeholder {
 .DetailView{
   box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.14);
   padding: 0;
+  background-color: white;
 }
 .Header{
   background-color: #f6682F;
@@ -97,7 +102,6 @@ input:-ms-input-placeholder {
   display: none;
 }
 .searched-list-show{
-  display: inline-block;
   position: absolute;
   z-index: 99999;
   text-align: left;
@@ -112,6 +116,9 @@ input:-ms-input-placeholder {
 }
 .SearchBar a:hover{
   text-decoration: none;
+}
+.CoinsList .table{
+  margin: 0;
 }
 .table a:hover{
   text-decoration: none;
@@ -133,6 +140,7 @@ input:-ms-input-placeholder {
 }
 .Content{
   background-color: white;
+  padding-bottom: 15px !important;
 }
 .page-link{
   padding: 3px 5px;
@@ -166,7 +174,7 @@ input:-ms-input-placeholder {
   padding-right: 15px;
 }
 .CoinsList{
-  margin: 0px 15px 20px 15px;
+  margin: 0px 15px 0px 15px;
 }
 .CoinsList thead tr th:first-child{
   background-color: #706F6F;
@@ -194,6 +202,11 @@ input:-ms-input-placeholder {
 .on-load{
   opacity: 0.3;
   pointer-events: none;
+}
+.detail-view-on-load{
+  opacity: 0;
+  pointer-events: none;
+  height: 382.8px;
 }
 .content-loading{
   position: absolute;
@@ -232,9 +245,6 @@ input:-ms-input-placeholder {
   padding: 0;
   max-width: 100%;
   padding-top: 17px !important;
-}
-.onLoad{
-  
 }
 .DetailTitle{
   margin: 0;
@@ -292,8 +302,27 @@ input:-ms-input-placeholder {
   margin-top: 49px;
 }
 .DetailGraph{
-  height: 500px;
-  background-color: #f6682F;
+  background-color: white;
+  margin-top: 15px;
+}
+.DetailGraph circle{
+  r:0;
+}
+.graph-bottom{
+  text-align: right;
+  padding-right: 9px;
+  margin-top: -10px;
+  padding-bottom: 4px;
+  font-size: 11px;
+}
+.Footer{
+  height: 70px;
+  vertical-align: middle;
+  line-height: 70px;
+}
+.Footer p{
+  text-align:center; 
+  vertical-align:middle;
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }

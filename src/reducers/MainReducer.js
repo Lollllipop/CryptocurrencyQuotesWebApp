@@ -1,8 +1,9 @@
 import { 
   INIT_VIEW, 
   CLICK_BUTTON, 
-  CLICK_BUTTON_MIDDLE_ACTION ,
-  UPDATE_COINS_WITH_SOCKET
+  CLICK_BUTTON_MIDDLE_ACTION,
+  UPDATE_COINS_WITH_SOCKET,
+  INIT_DETAIL_VIEW_COIN_LIST
 } from '../actions'; 
 
 const initValue = {
@@ -76,6 +77,20 @@ export default function(state=initValue, action) {
       onLoad: state.onLoad,
       socketCount: state.socketCount,
       increaseFlag: action.data.increaseFlag
+    };
+  case INIT_DETAIL_VIEW_COIN_LIST:
+    return {
+      error: '',
+      coins10DisplayList: [...state.coins10DisplayList],
+      coinsNameList: action.data.coinsNameList,
+      coinsSymbolList: [...state.coinsSymbolList],
+      coinsImageUrlList: [...state.coinsImageUrlList],
+      coinsIdList: [...state.coinsIdList],
+      coinsPriceHistoricalObject: state.coinsPriceHistoricalObject,
+      pageCount: state.pageCount,
+      onLoad: state.onLoad,
+      socketCount: state.socketCount,
+      increaseFlag: state.increaseFlag
     };
   default:
     return state;
