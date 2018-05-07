@@ -1,13 +1,11 @@
 import { 
-  PRE_ON_CHANGE_STATE,
   ON_CHANGE_SEARCHBAR_STATE
 } from '../actions'; 
 
 const initValue = {
   error: '',
   searchedCoinList: [],
-  onLoad: false,
-  onSearch: false
+  onLoad: false
 };
 
 export default function(state=initValue, action) {
@@ -16,15 +14,7 @@ export default function(state=initValue, action) {
     return {                                                           
       error: '',
       searchedCoinList: action.data.searchedCoinList,
-      onLoad: action.data.onLoad,
-      onSearch: action.data.onSearch
-    };
-  case PRE_ON_CHANGE_STATE:
-    return {                                                           
-      error: '',
-      searchedCoinList: [...state.searchedCoinList],
-      onLoad: action.data.onLoad,
-      onSearch: action.data.onSearch
+      onLoad: action.data.onLoad
     };
   default:
     return state;

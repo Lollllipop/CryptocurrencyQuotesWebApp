@@ -1,6 +1,7 @@
 import { 
   INIT_DETAIL_VIEW, 
-  INIT_DETAIL_MIDDLE_ACTION 
+  UN_INIT_DETAIL_VIEW,
+  INIT_DETAIL_MIDDLE_ACTION
 } from '../actions'; 
 
 const initValue = {
@@ -16,6 +17,15 @@ export default function(state=initValue, action) {
   switch(action.type) {
   case INIT_DETAIL_VIEW:      
     return {                                                           
+      error: '',
+      coinDisplayObject: action.data.coinDisplayObject,
+      coinHistoricalClosePriceList: action.data.coinHistoricalClosePriceList,
+      lastMinute: action.data.lastMinute,
+      onLoad: action.data.onLoad,
+      // increaseFlag: [...state.increaseFlag]
+    };
+  case UN_INIT_DETAIL_VIEW:
+    return {
       error: '',
       coinDisplayObject: action.data.coinDisplayObject,
       coinHistoricalClosePriceList: action.data.coinHistoricalClosePriceList,

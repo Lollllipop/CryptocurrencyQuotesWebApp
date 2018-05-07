@@ -9,6 +9,7 @@ const CRYPTO_CURRENCY_LIST_URL = 'https://min-api.cryptocompare.com/data/all/coi
 const CRYPTO_CURRENCY_QUOTES_URL = 'https://min-api.cryptocompare.com/data/pricemultifull';
 const CRYPTO_CURRENCY_PRICE_HISTORICAL_URL = 'https://min-api.cryptocompare.com/data/histohour';
 const CRYPTO_CURRENCY_PRICE_HISTORICAL_MINUTE_URL = 'https://min-api.cryptocompare.com/data/histominute';
+
 const TO_SYMBOL = 'KRW';
 const HISTORICAL_LIMIT = '71';
 const HISTORICAL_MINUTE_LIMIT = '1439';
@@ -31,12 +32,11 @@ export function initViewAsync() {
         coinsIdList = coinsList.map(obj => obj.Id); // ['1182', '7605'...]
         const coins10SymbolString = coinsList.map(object => object.Symbol).slice(0, 10).join();
         const coins10SymbolList = coins10SymbolString.split(',');
-        const priceHistoricalPromises = coins10SymbolList.map(symbol => axios.get(`${CRYPTO_CURRENCY_PRICE_HISTORICAL_URL}?fsym=${symbol}&tsym=${TO_SYMBOL}&limit=${HISTORICAL_LIMIT}`));
         const priceCoins10Promise = axios.get(`${CRYPTO_CURRENCY_QUOTES_URL}?fsyms=${coins10SymbolString}&tsyms=${TO_SYMBOL}`);
+        let priceHistoricalPromises = coins10SymbolList.map(symbol => axios.get(`${CRYPTO_CURRENCY_PRICE_HISTORICAL_URL}?fsym=${symbol}&tsym=${TO_SYMBOL}&limit=${HISTORICAL_LIMIT}`));
         priceHistoricalPromises.push(priceCoins10Promise); 
 
         return Promise.all(priceHistoricalPromises);
-
       })
       .then(response => {
         const pageCount = 0;

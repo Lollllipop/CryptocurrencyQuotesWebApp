@@ -1,18 +1,20 @@
 import axios from 'axios';
 
 export const UPDATE_COINS_WITH_SOCKET = 'UPDATE_COINS_WITH_SOCKET';  
-
+ 
 const PRICE_HISTORICAL_URL = 'https://min-api.cryptocompare.com/data/pricehistorical';
+
 const TO_SYMBOL = 'KRW';
 const ONE_DAY = 86400;
 
 export function updateCoinsWithSocketAsync(message) {
   return (dispatch, getState) => {
-    
     if (message.split('~').length > 5) {
+
       messageParser(message)
         .then(response => {
           const currentState = getState();
+          
           const currentCoins10DisplayList = currentState.mainReducer.coins10DisplayList;
 
           for (let val of currentCoins10DisplayList) {

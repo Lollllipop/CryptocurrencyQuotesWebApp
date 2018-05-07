@@ -109,6 +109,10 @@ input:-ms-input-placeholder {
 }
 .searched-list-wrapper{
   width: 100%;
+  position: absolute;
+  z-index: 99999;
+  text-align: left;
+  top: 35px;
 }
 .SearchedList .list-group-item:first-child{
   border-top-left-radius: 0;

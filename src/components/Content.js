@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
-import { initViewAsync, clickButtonAsync, updateCoinsWithSocketAsync } from '../actions';
+import { initViewAsync, unInitView, clickButtonAsync, updateCoinsWithSocketAsync } from '../actions';
 import { priceUSD2KRW, priceUSD2Number } from '../utils';
 
 import Chart from './ListChart';
@@ -32,36 +32,36 @@ class Content extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.socketHandler(prevProps);
+    this.socketHandler(this.state.socket, this.props, prevProps);
   }
 
   componentWillUnmount() {
     this.state.socket.close();
+    this.props.unInitView();
   }
 
-  socketHandler(prevProps) {
+  socketHandler(socket, currentProps, prevProps) {
     if ( // 처음 그리고 페이지 바뀔시 emit
-      (prevProps.coins.length === 0 && this.props.coins.length !== 0) ||
-      (this.props.coins !== prevProps.coins && this.props.socketCount !== prevProps.socketCount)
-    ) 
-    {
-
+      (prevProps.coins.length === 0 && currentProps.coins.length !== 0) ||
+      (currentProps.coins !== prevProps.coins && currentProps.socketCount !== prevProps.socketCount)
+    ) {
+  
       if (prevProps.coins.length !== 0) {
         for (let coin of prevProps.coins) {
           let fromSymbol = coin.symbol;
-          this.state.socket.emit('SubRemove', { subs: [`5~CCCAGG~${fromSymbol}~KRW`] } );
+          socket.emit('SubRemove', { subs: [`5~CCCAGG~${fromSymbol}~KRW`] } );
         }
       }
-
-      for (let coin of this.props.coins) {
+  
+      for (let coin of currentProps.coins) {
         let fromSymbol = coin.symbol;
-        this.state.socket.emit('SubAdd', { subs: [`5~CCCAGG~${fromSymbol}~KRW`] } );
+        socket.emit('SubAdd', { subs: [`5~CCCAGG~${fromSymbol}~KRW`] } );
       }
   
-      this.state.socket.on('m', message => {
-        this.props.updateCoinsWithSocketAsync(message);
+      socket.on('m', message => {
+        currentProps.updateCoinsWithSocketAsync(message);
       });
-
+  
     }
   }
 
@@ -123,6 +123,7 @@ class Content extends Component {
 
   listOrderHandler(selectedListHead) {
     let newListOrderFlagClass = {PRICE:['', ''], MKTCAP:['', ''], CHANGEPCT24HOUR:['', ''], VOLUME24HOURTO:['', '']}; // 항상 초기화
+
     if (this.state.listOrderFlag === '') {
       newListOrderFlagClass[selectedListHead][1] = 'desc';
       this.setState({
@@ -292,6 +293,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     { 
       initViewAsync,
+      unInitView,
       clickButtonAsync,
       updateCoinsWithSocketAsync
     },

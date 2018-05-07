@@ -12,7 +12,12 @@ class SearchedList extends Component {
   renderCoinsName() {
     return this.props.searchedCoinList.map(value => {
       return (
-        <Link to={`/${value}`} key={value} className="list-group-item list-group-item-action" onClick={() => this.clickHandler()}>{value}</Link>
+        <Link 
+          to={`/${value}`} 
+          key={value} 
+          className="list-group-item list-group-item-action" 
+          onClick={() => this.clickHandler()}
+        >{value}</Link>
       );
     });
   }
