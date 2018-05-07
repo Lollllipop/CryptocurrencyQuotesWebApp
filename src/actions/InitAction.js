@@ -82,6 +82,7 @@ export function initDetailViewAsync(coinName) { // coinName 값만 가지고 있
     });
 
     const currentState = getState();
+    console.log(currentState.mainReducer);
     let coinsObjectList;
 
     if (currentState.mainReducer.coinsSymbolList.length === 0) { // 초기화가 안되어 있다면

@@ -11,13 +11,6 @@ import DetailGraph from '../components/DetailGraph';
 
 class DetailView extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      socket: null
-    };
-  }
-
   componentDidMount() {
     const coinName = this.props.match.params.coinName;
     this.props.initDetailViewAsync(coinName);
